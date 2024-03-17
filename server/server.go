@@ -9,6 +9,7 @@ import (
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"github.com/nathan-osman/quicksend/db"
+	"github.com/nathan-osman/quicksend/server/ui"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
@@ -46,6 +47,11 @@ func New(secretKey, serverAddr, smtpAddr string, conn *db.Conn) (*Server, error)
 	store.Options(sessions.Options{
 		Path:     "/",
 		HttpOnly: true,
+	})
+
+	// Serve the static files from /admin
+	r.StaticFS("/", ui.EmbedFileSystem{
+		FileSystem: http.FS(ui.Content),
 	})
 
 	// Listen for connections in a separate goroutine
