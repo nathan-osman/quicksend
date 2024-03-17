@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --background: #222831;
+  --background-light: #31363f;
+  --foreground: #eeeeee;
+  --primary: #1c446d;
+  --primary-light: #4488CE;
+}
+
+body {
+  @apply text-foreground;
+}
