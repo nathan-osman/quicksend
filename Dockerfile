@@ -29,7 +29,7 @@ RUN go mod download && go mod verify
 COPY . .
 
 # Copy the UI files
-COPY --from=ui /usr/src/app/dist/ ui
+COPY --from=ui /usr/src/app/dist/ ui/dist
 
 # Build the application
 RUN go build
