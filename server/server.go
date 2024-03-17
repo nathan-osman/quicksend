@@ -10,7 +10,7 @@ import (
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/nathan-osman/quicksend/db"
-	"github.com/nathan-osman/quicksend/server/ui"
+	"github.com/nathan-osman/quicksend/ui"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
