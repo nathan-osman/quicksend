@@ -12,6 +12,7 @@ module.exports = {
         'foreground': 'var(--foreground)',
         'primary': 'var(--primary)',
         'primary-light': 'var(--primary-light)',
+        'danger': 'var(--danger)',
       }
     },
   },

@@ -8,6 +8,7 @@
   --foreground: #eeeeee;
   --primary: #1c446d;
   --primary-light: #4488CE;
+  --danger: #fe453c;
 }
 
 body {
