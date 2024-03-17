@@ -1,0 +1,7 @@
+/.gitignore
+/db.sqlite3
+/LICENSE.txt
+/quicksend
+/quicksend.code-workspace
+/quicksend.exe
+/README.md
