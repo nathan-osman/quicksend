@@ -8,13 +8,16 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
+	"github.com/nathan-osman/quicksend/db"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
 
 type Server struct {
-	server http.Server
-	logger zerolog.Logger
+	server   http.Server
+	logger   zerolog.Logger
+	smtpAddr string
+	conn     *db.Conn
 }
 
 func init() {
@@ -22,7 +25,7 @@ func init() {
 	gin.SetMode(gin.ReleaseMode)
 }
 
-func New(secretKey, serverAddr string) (*Server, error) {
+func New(secretKey, serverAddr, smtpAddr string, conn *db.Conn) (*Server, error) {
 
 	// Initialize the server
 	var (
@@ -32,7 +35,9 @@ func New(secretKey, serverAddr string) (*Server, error) {
 				Addr:    serverAddr,
 				Handler: r,
 			},
-			logger: log.With().Str("package", "server").Logger(),
+			logger:   log.With().Str("package", "server").Logger(),
+			smtpAddr: smtpAddr,
+			conn:     conn,
 		}
 		store = cookie.NewStore([]byte(secretKey))
 	)
