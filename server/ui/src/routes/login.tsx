@@ -1,4 +1,5 @@
 import { FormEvent, useState } from 'react'
+import { Navigate } from 'react-router-dom'
 import { useApi } from '../lib/api'
 import Button from '../components/form/Button'
 import Input from '../components/form/Input'
@@ -7,6 +8,13 @@ import TitleSvg from '../img/title.svg'
 export default function Login() {
 
   const api = useApi()
+
+  // If the user is already logged in, redirect!
+  if (api.isAuthenticated) {
+    return (
+      <Navigate to="/" />
+    )
+  }
 
   const [error, setError] = useState<string | null>(null)
   const [email, setEmail] = useState('')

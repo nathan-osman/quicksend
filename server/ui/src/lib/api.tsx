@@ -48,6 +48,7 @@ async function apiPost<T extends z.ZodTypeAny>(
 }
 
 type ApiContextType = {
+  isAuthenticated: boolean
   login: (email: string, password: string) => Promise<void>
   logout: () => Promise<void>
 }
@@ -58,21 +59,27 @@ function ApiProvider(props: PropsWithChildren) {
 
   const navigate = useNavigate()
 
-  const [isLoaded, setIsLoaded] = useState<boolean>(false)
+  const [isLoaded, setIsLoaded] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   const apiContext = {
+    isAuthenticated,
     login: async function (email: string, password: string): Promise<void> {
       return apiPost(z.void(), '/api/login', { email, password })
         .then(() => navigate('/'))
     },
     logout: async function (): Promise<void> {
       return apiPost(z.void(), '/api/logout', null)
-        .then(() => navigate('/login'))
+        .then(() => {
+          setIsAuthenticated(false)
+          navigate('/login')
+        })
     },
   }
 
   useEffect(() => {
     apiGet(z.void(), '/api/test')
+      .then(() => setIsAuthenticated(true))
       .catch(() => navigate('/login'))
       .finally(() => setIsLoaded(true))
   }, [])
