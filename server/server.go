@@ -49,9 +49,16 @@ func New(secretKey, serverAddr, smtpAddr string, conn *db.Conn) (*Server, error)
 		HttpOnly: true,
 	})
 
-	// Serve the static files from /admin
+	// Serve the static files from /
 	r.StaticFS("/", ui.EmbedFileSystem{
 		FileSystem: http.FS(ui.Content),
+	})
+
+	// Serve the static files on all other paths too
+	r.NoRoute(func(c *gin.Context) {
+		c.Request.URL.Path = "/"
+		r.HandleContext(c)
+		c.Abort()
 	})
 
 	// Listen for connections in a separate goroutine
