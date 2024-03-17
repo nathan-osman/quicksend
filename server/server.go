@@ -7,12 +7,15 @@ import (
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/nathan-osman/quicksend/db"
 	"github.com/nathan-osman/quicksend/server/ui"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
+
+const sessionName = "session"
 
 type Server struct {
 	server   http.Server
@@ -50,9 +53,34 @@ func New(secretKey, serverAddr, smtpAddr string, conn *db.Conn) (*Server, error)
 	})
 
 	// Serve the static files from /
-	r.StaticFS("/", ui.EmbedFileSystem{
-		FileSystem: http.FS(ui.Content),
-	})
+	r.Use(
+		static.Serve(
+			"/",
+			ui.EmbedFileSystem{
+				FileSystem: http.FS(ui.Content),
+			},
+		),
+	)
+
+	groupApi := r.Group("/api")
+	{
+		// Use the session and our custom user middleware for the API
+		groupApi.Use(
+			gin.CustomRecoveryWithWriter(nil, panicToJSONError),
+			sessions.Sessions(sessionName, store),
+			s.loadUser,
+		)
+
+		groupApi.POST("/login", s.apiLogin)
+
+		// Routes that require authentication
+		groupAuthApi := groupApi.Group("")
+		{
+			groupAuthApi.Use(s.requireUser)
+			groupAuthApi.GET("/test", s.apiTest)
+			groupAuthApi.POST("/logout", s.apiLogout)
+		}
+	}
 
 	// Serve the static files on all other paths too
 	r.NoRoute(func(c *gin.Context) {
