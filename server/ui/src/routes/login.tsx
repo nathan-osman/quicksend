@@ -1,6 +1,6 @@
 import Button from '../components/form/Button'
 import Input from '../components/form/Input'
-import LogoSvg from '../img/logo.svg'
+import TitleSvg from '../img/title.svg'
 
 export default function Login() {
   return (
@@ -9,7 +9,7 @@ export default function Login() {
         <div className="text-lg">
           <form>
             <div className="mb-4">
-              <img src={LogoSvg} />
+              <img src={TitleSvg} />
             </div>
             <Input
               placeholder="Username"
