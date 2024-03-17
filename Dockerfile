@@ -37,9 +37,9 @@ RUN go build
 
 FROM debian:latest
 
-# Install curl
+# Install wget
 RUN apt-get update && \
-    apt-get install -y curl && \
+    apt-get install -y wget && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy the application
@@ -48,4 +48,4 @@ COPY --from=backend /usr/src/app/quicksend /usr/local/bin
 ENTRYPOINT ["/usr/local/bin/quicksend"]
 
 # Application is up and running when it responds to HTTP requests
-HEALTHCHECK CMD curl -f http://localhost || exit 1
+HEALTHCHECK CMD wget --no-verbose --tries=1 --spider http://localhost/ || exit 1
