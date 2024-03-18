@@ -42,18 +42,22 @@ export default function Login() {
                 Error: {error}
               </div>
             }
-            <Input
-              placeholder="Username"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              autoFocus
-            />
-            <Input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-            />
+            <div className="my-2">
+              <Input
+                placeholder="Username"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                autoFocus
+              />
+            </div>
+            <div className="my-2">
+              <Input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+              />
+            </div>
             <div className="text-right">
               <Button primary={true}>Login</Button>
             </div>

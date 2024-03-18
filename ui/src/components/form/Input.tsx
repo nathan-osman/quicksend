@@ -15,11 +15,9 @@ export default function Input(props: InputHTMLAttributes<HTMLInputElement>) {
   )
 
   return (
-    <div className='my-2'>
-      <input
-        {...props}
-        className={className}
-      />
-    </div>
+    <input
+      {...props}
+      className={className}
+    />
   )
 }
