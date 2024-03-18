@@ -1,22 +1,48 @@
+import { useState } from 'react'
 import { useApi } from '../lib/api'
+import Textarea from '../components/form/Textarea'
+import Controls from '../components/ui/Controls'
+import Navbar from '../components/ui/Navbar'
 
 export default function Index() {
 
   const api = useApi()
 
-  function handleLogout(e: React.MouseEvent) {
-    e.preventDefault()
-    api.logout()
+  const [text, setText] = useState("Text content...")
+  const [html, setHtml] = useState("HTML content...")
+
+  function handleHtmlChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    setHtml(e.target.value)
   }
 
   return (
-    <>
-      <a
-        href="#"
-        onClick={handleLogout}
-      >
-        Logout
-      </a>
-    </>
+    <div className="grow flex flex-col gap-2 m-4">
+      <Navbar />
+      <Controls />
+      <div className="grow flex flex-col lg:flex-row gap-2">
+        <div className="lg:flex-1 bg-background rounded p-2">
+          <Textarea
+            className="h-full resize-none font-mono"
+            spellCheck={false}
+            value={text}
+            onChange={e => setText(e.target.value)}
+          />
+        </div>
+        <div className="lg:flex-1 bg-background rounded p-2">
+          <Textarea
+            className="h-full resize-none font-mono"
+            spellCheck={false}
+            value={html}
+            onChange={handleHtmlChange}
+          />
+        </div>
+        <div className="lg:flex-1 bg-background rounded p-2">
+          <iframe
+            className="bg-white rounded w-full h-full"
+            srcDoc={html}
+          />
+        </div>
+      </div>
+    </div>
   )
 }
