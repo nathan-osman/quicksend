@@ -40,7 +40,7 @@ func main() {
 			},
 			&cli.StringFlag{
 				Name:    "smtp-addr",
-				Value:   ":smtp",
+				Value:   "localhost:25",
 				EnvVars: []string{"SMTP_ADDR"},
 				Usage:   "address of SMTP server to use for sending mail",
 			},

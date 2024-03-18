@@ -8,6 +8,7 @@ require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/rs/zerolog v1.32.0
 	github.com/urfave/cli/v2 v2.27.1
+	github.com/xhit/go-simple-mail/v2 v2.16.0
 	golang.org/x/crypto v0.21.0
 	golang.org/x/term v0.18.0
 	gorm.io/driver/sqlite v1.5.5
@@ -40,6 +41,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.1.1 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
+	github.com/toorop/go-dkim v0.0.0-20201103131630-e1cd1a0a5208 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect

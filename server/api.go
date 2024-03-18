@@ -1,11 +1,15 @@
 package server
 
 import (
+	"net"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/nathan-osman/quicksend/db"
+
+	mail "github.com/xhit/go-simple-mail/v2"
 )
 
 func (s *Server) apiTest(c *gin.Context) {
@@ -69,6 +73,51 @@ func (s *Server) apiHostsCreate(c *gin.Context) {
 		Addr: v.Addr,
 	}
 	if err := s.conn.Save(h).Error; err != nil {
+		panic(err)
+	}
+	c.Status(http.StatusNoContent)
+}
+
+type apiSendParams struct {
+	To      []string `json:"to"`
+	From    string   `json:"from"`
+	Subject string   `json:"subject"`
+	Text    string   `json:"text"`
+	Html    string   `json:"html"`
+}
+
+func (s *Server) apiSend(c *gin.Context) {
+	v := &apiSendParams{}
+	if err := c.ShouldBindJSON(v); err != nil {
+		panic(err)
+	}
+	host, portStr, err := net.SplitHostPort(s.smtpAddr)
+	if err != nil {
+		panic(err)
+	}
+	port, err := strconv.Atoi(portStr)
+	if err != nil {
+		panic(err)
+	}
+	server := mail.NewSMTPClient()
+	server.Host = host
+	server.Port = port
+	smtpClient, err := server.Connect()
+	if err != nil {
+		panic(err)
+	}
+	defer smtpClient.Close()
+	email := mail.NewMSG()
+	email.
+		AddTo(v.To...).
+		SetFrom(v.From).
+		SetSubject(v.Subject).
+		SetBody(mail.TextPlain, v.Text).
+		AddAlternative(mail.TextHTML, v.Html)
+	if email.Error != nil {
+		panic(email.Error)
+	}
+	if err := email.Send(smtpClient); err != nil {
 		panic(err)
 	}
 	c.Status(http.StatusNoContent)

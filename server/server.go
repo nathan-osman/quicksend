@@ -82,6 +82,8 @@ func New(secretKey, serverAddr, smtpAddr string, conn *db.Conn) (*Server, error)
 
 			groupAuthApi.GET("/hosts", s.apiHosts)
 			groupAuthApi.POST("/hosts/create", s.apiHostsCreate)
+
+			groupAuthApi.POST("/send", s.apiSend)
 		}
 	}
 
