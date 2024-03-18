@@ -2,21 +2,11 @@ import { clsx } from 'clsx'
 import Input from '../form/Input'
 import VDivider from './VDivider'
 import LogoSvg from '../../img/logo.svg'
+import Button from '../form/Button'
 
 export default function Controls() {
 
-  const sendClassName = clsx(
-    'hover:bg-background-light',
-    'rounded',
-    'shadow',
-    'p-2',
-    'flex',
-    'flex-col',
-    'items-center',
-    'cursor-pointer',
-  )
-
-  const controlClassName = clsx(
+  const className = clsx(
     'grow',
     'grid',
     'gap-2',
@@ -27,14 +17,14 @@ export default function Controls() {
   return (
     <div className="bg-background rounded p-2">
       <div className="flex gap-4 items-start">
-        <div className={sendClassName}>
+        <Button>
           <img
             src={LogoSvg}
           />
           Send
-        </div>
+        </Button>
         <VDivider />
-        <div className={controlClassName}>
+        <div className={className}>
 
           {/* Recipient(s) */}
           <div className="text-right">To:</div>

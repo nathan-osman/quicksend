@@ -9,8 +9,8 @@ export default function Index() {
 
   const api = useApi()
 
-  const [text, setText] = useState("Text content...")
-  const [html, setHtml] = useState("HTML content...")
+  const [text, setText] = useState('')
+  const [html, setHtml] = useState('')
 
   const [debouncedHtml] = useDebounce(html, 1000)
 
@@ -27,6 +27,7 @@ export default function Index() {
           <Textarea
             className="h-full resize-none font-mono"
             spellCheck={false}
+            placeholder="Text content"
             value={text}
             onChange={e => setText(e.target.value)}
           />
@@ -35,6 +36,7 @@ export default function Index() {
           <Textarea
             className="h-full resize-none font-mono"
             spellCheck={false}
+            placeholder="HTML content (with preview)"
             value={html}
             onChange={handleHtmlChange}
           />
