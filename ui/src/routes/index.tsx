@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useDebounce } from 'use-debounce'
 import { useApi } from '../lib/api'
 import Textarea from '../components/form/Textarea'
 import Controls from '../components/ui/Controls'
@@ -10,6 +11,8 @@ export default function Index() {
 
   const [text, setText] = useState("Text content...")
   const [html, setHtml] = useState("HTML content...")
+
+  const [debouncedHtml] = useDebounce(html, 1000)
 
   function handleHtmlChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setHtml(e.target.value)
@@ -39,7 +42,7 @@ export default function Index() {
         <div className="lg:flex-1 bg-background rounded p-2">
           <iframe
             className="bg-white rounded w-full h-full"
-            srcDoc={html}
+            srcDoc={debouncedHtml}
           />
         </div>
       </div>
