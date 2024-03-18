@@ -4,7 +4,17 @@ import VDivider from './VDivider'
 import LogoSvg from '../../img/logo.svg'
 import Button from '../form/Button'
 
-export default function Controls() {
+type Props = {
+  to: string[]
+  from: string
+  subject: string
+  onToChange: (to: string[]) => void
+  onFromChange: (from: string) => void
+  onSubjectChange: (subject: string) => void
+  onSend: () => void
+}
+
+export default function Controls(props: Props) {
 
   const className = clsx(
     'grow',
@@ -17,7 +27,10 @@ export default function Controls() {
   return (
     <div className="bg-background rounded p-2">
       <div className="flex gap-4 items-start">
-        <Button>
+        <Button
+          type="button"
+          onClick={props.onSend}
+        >
           <img
             src={LogoSvg}
           />
@@ -30,6 +43,8 @@ export default function Controls() {
           <div className="text-right">To:</div>
           <div>
             <Input
+              value={props.to}
+              onChange={e => props.onToChange([e.target.value])}
               placeholder="recipient@example.com"
             />
           </div>
@@ -38,6 +53,8 @@ export default function Controls() {
           <div className="text-right">From:</div>
           <div>
             <Input
+              value={props.from}
+              onChange={e => props.onFromChange(e.target.value)}
               placeholder="sender@example.com"
             />
           </div>
@@ -45,7 +62,10 @@ export default function Controls() {
           {/* Subject */}
           <div className="text-right">Subject:</div>
           <div>
-            <Input />
+            <Input
+              value={props.subject}
+              onChange={e => props.onSubjectChange(e.target.value)}
+            />
           </div>
 
         </div>

@@ -102,6 +102,8 @@ function useApi(): ApiContextType {
 }
 
 export {
+  apiGet,
+  apiPost,
   ApiProvider,
   useApi,
 }
