@@ -38,6 +38,12 @@ func main() {
 				EnvVars: []string{"SERVER_ADDR"},
 				Usage:   "HTTP address to listen on",
 			},
+			&cli.StringFlag{
+				Name:    "smtp-addr",
+				Value:   ":smtp",
+				EnvVars: []string{"SMTP_ADDR"},
+				Usage:   "address of SMTP server to use for sending mail",
+			},
 		},
 		Before: func(c *cli.Context) error {
 			conn, err := db.New(c.String("data-dir"))
@@ -95,6 +101,7 @@ func main() {
 			s, err := server.New(
 				c.String("secret-key"),
 				c.String("server-addr"),
+				c.String("smtp-addr"),
 				conn,
 			)
 			if err != nil {
