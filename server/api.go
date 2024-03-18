@@ -45,3 +45,31 @@ func (s *Server) apiLogout(c *gin.Context) {
 	}
 	c.Status(http.StatusNoContent)
 }
+
+func (s *Server) apiHosts(c *gin.Context) {
+	v := []*db.Host{}
+	if err := s.conn.Find(&v).Error; err != nil {
+		panic(err)
+	}
+	c.JSON(http.StatusOK, v)
+}
+
+type apiHostsCreateParams struct {
+	Name string `json:"name"`
+	Addr string `json:"addr"`
+}
+
+func (s *Server) apiHostsCreate(c *gin.Context) {
+	v := &apiHostsCreateParams{}
+	if err := c.ShouldBindJSON(v); err != nil {
+		panic(err)
+	}
+	h := &db.Host{
+		Name: v.Name,
+		Addr: v.Addr,
+	}
+	if err := s.conn.Save(h).Error; err != nil {
+		panic(err)
+	}
+	c.Status(http.StatusNoContent)
+}

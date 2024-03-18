@@ -18,10 +18,9 @@ import (
 const sessionName = "session"
 
 type Server struct {
-	server   http.Server
-	logger   zerolog.Logger
-	smtpAddr string
-	conn     *db.Conn
+	server http.Server
+	logger zerolog.Logger
+	conn   *db.Conn
 }
 
 func init() {
@@ -29,7 +28,7 @@ func init() {
 	gin.SetMode(gin.ReleaseMode)
 }
 
-func New(secretKey, serverAddr, smtpAddr string, conn *db.Conn) (*Server, error) {
+func New(secretKey, serverAddr string, conn *db.Conn) (*Server, error) {
 
 	// Initialize the server
 	var (
@@ -39,9 +38,8 @@ func New(secretKey, serverAddr, smtpAddr string, conn *db.Conn) (*Server, error)
 				Addr:    serverAddr,
 				Handler: r,
 			},
-			logger:   log.With().Str("package", "server").Logger(),
-			smtpAddr: smtpAddr,
-			conn:     conn,
+			logger: log.With().Str("package", "server").Logger(),
+			conn:   conn,
 		}
 		store = cookie.NewStore([]byte(secretKey))
 	)
@@ -79,6 +77,9 @@ func New(secretKey, serverAddr, smtpAddr string, conn *db.Conn) (*Server, error)
 			groupAuthApi.Use(s.requireUser)
 			groupAuthApi.GET("/test", s.apiTest)
 			groupAuthApi.POST("/logout", s.apiLogout)
+
+			groupAuthApi.GET("/hosts", s.apiHosts)
+			groupAuthApi.POST("/hosts/create", s.apiHostsCreate)
 		}
 	}
 
